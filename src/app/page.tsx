@@ -42,38 +42,42 @@ export default function Home() {
   };
 
   return (
-    <main style={{ padding: '2rem', fontFamily: 'sans-serif' }}>
-      <h1>Parkrun Time Converter</h1>
-      <p>Enter your parkrun time and compare it across different courses.</p>
+    <main className="flex min-h-screen items-center justify-center p-4">
+      <div className="border-border-surface bg-bg-surface w-full max-w-xl space-y-6 rounded-2xl border p-8 shadow-lg sm:p-12">
+        <h1 className="text-center text-3xl font-bold">
+          Parkrun Time Converter
+        </h1>
+        <p className="text-text-subdued text-center">
+          Enter your parkrun time and compare it with different courses.
+        </p>
 
-      <div style={{ marginTop: '1rem' }}>
-        <label>
-          Minutes:
-          <input
-            type="number"
-            value={minutes}
-            onChange={(e) => setMinutes(e.target.value)}
-            style={{ marginLeft: '0.5rem', marginRight: '1rem' }}
-          />
-        </label>
-        <label>
-          Seconds:
-          <input
-            type="number"
-            value={seconds}
-            onChange={(e) => setSeconds(e.target.value)}
-            style={{ marginLeft: '0.5rem' }}
-          />
-        </label>
-      </div>
+        <div className="flex space-x-4">
+          <label className="flex-1">
+            <span className="mb-1 block font-medium">Minutes:</span>
+            <input
+              type="number"
+              value={minutes}
+              onChange={(e) => setMinutes(e.target.value)}
+              className="border-border-input bg-bg-input w-full rounded-lg border p-2 focus:ring-2 focus:outline-none"
+            />
+          </label>
+          <label className="flex-1">
+            <span className="mb-1 block font-medium">Seconds:</span>
+            <input
+              type="number"
+              value={seconds}
+              onChange={(e) => setSeconds(e.target.value)}
+              className="border-border-input bg-bg-input w-full rounded-lg border p-2 focus:ring-2 focus:outline-none"
+            />
+          </label>
+        </div>
 
-      <div style={{ marginTop: '1rem' }}>
-        <label>
-          Current Parkrun:
+        <div>
+          <label className="mb-1 block font-medium">Current Parkrun:</label>
           <select
             value={currentParkrun}
             onChange={(e) => setCurrentParkrun(e.target.value)}
-            style={{ marginLeft: '0.5rem' }}
+            className="border-border-input bg-bg-input w-full rounded-lg border p-2 focus:ring-2 focus:outline-none"
           >
             {Object.keys(sss).map((parkrun) => (
               <option key={parkrun} value={parkrun}>
@@ -81,16 +85,14 @@ export default function Home() {
               </option>
             ))}
           </select>
-        </label>
-      </div>
+        </div>
 
-      <div style={{ marginTop: '1rem' }}>
-        <label>
-          Target Parkrun:
+        <div>
+          <label className="mb-1 block font-medium">Target Parkrun:</label>
           <select
             value={targetParkrun}
             onChange={(e) => setTargetParkrun(e.target.value)}
-            style={{ marginLeft: '0.5rem' }}
+            className="border-border-input bg-bg-input w-full rounded-lg border p-2 focus:ring-2 focus:outline-none"
           >
             {Object.keys(sss).map((parkrun) => (
               <option key={parkrun} value={parkrun}>
@@ -98,22 +100,26 @@ export default function Home() {
               </option>
             ))}
           </select>
-        </label>
+        </div>
+
+        <button
+          onClick={convertTime}
+          className="bg-bg-button hover:bg-bg-button-hover w-full rounded-lg py-3 text-lg font-semibold transition focus:ring-2 focus:outline-none"
+        >
+          Convert
+        </button>
+
+        {error && (
+          <p className="text-text-error text-center font-bold">{error}</p>
+        )}
+
+        {adjustedTime && (
+          <p className="text-center text-xl">
+            Estimated time at {targetParkrun}:{" "}
+            <span className="text-2xl font-semibold">{adjustedTime}</span>
+          </p>
+        )}
       </div>
-
-      <button onClick={convertTime} style={{ marginTop: '1rem' }}>
-        Convert
-      </button>
-
-      {error && (
-        <p style={{ color: 'red', marginTop: '1rem' }}>{error}</p>
-      )}
-
-      {adjustedTime && (
-        <h2 style={{ marginTop: '1rem' }}>
-          Estimated time at {targetParkrun}: {adjustedTime}
-        </h2>
-      )}
     </main>
   );
 }
