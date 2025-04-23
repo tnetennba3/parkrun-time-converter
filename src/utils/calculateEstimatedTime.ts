@@ -1,4 +1,4 @@
-export function calculateAdjustedTime(
+export function calculateEstimatedTime(
   minutes: number,
   seconds: number,
   currentSSS: number,

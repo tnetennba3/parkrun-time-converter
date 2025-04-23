@@ -3,52 +3,51 @@
 import { useState } from "react";
 
 import sss from "@/data/sss";
-import { calculateAdjustedTime } from "@/utils/calculateAdjustedTime";
+import { calculateEstimatedTime } from "@/utils/calculateEstimatedTime";
 
 export default function Home() {
   const [minutes, setMinutes] = useState("");
   const [seconds, setSeconds] = useState("");
   const [currentParkrun, setCurrentParkrun] = useState("Finsbury Park");
   const [targetParkrun, setTargetParkrun] = useState("Highbury Fields");
-  const [adjustedTime, setAdjustedTime] = useState<string | null>(null);
+  const [estimatedTime, setEstimatedTime] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const convertTime = () => {
+  const handleClick = () => {
     const min = parseInt(minutes);
     const sec = parseInt(seconds);
 
     // Validation checks
     if (isNaN(min) || min < 13) {
       setError("Minutes must be 13 or more.");
-      setAdjustedTime(null);
+      setEstimatedTime(null);
       return;
     }
 
     if (isNaN(sec) || sec < 0 || sec >= 60) {
       setError("Seconds must be between 0 and 59.");
-      setAdjustedTime(null);
+      setEstimatedTime(null);
       return;
     }
 
     setError(null); // Clear any previous error
 
-    const adjusted = calculateAdjustedTime(
+    const adjusted = calculateEstimatedTime(
       min,
       sec,
       sss[currentParkrun],
       sss[targetParkrun],
     );
-    setAdjustedTime(adjusted);
+    setEstimatedTime(adjusted);
   };
 
   return (
     <main className="flex min-h-screen items-center justify-center p-4">
       <div className="border-border-surface bg-bg-surface w-full max-w-xl space-y-6 rounded-2xl border p-8 shadow-lg sm:p-12">
-        <h1 className="text-center text-3xl font-bold">
-          Parkrun Time Converter
-        </h1>
+        <h1 className="text-center text-3xl font-bold">Parkrun Calculator</h1>
         <p className="text-text-subdued text-center">
-          Enter your parkrun time and compare it with different courses.
+          Enter your parkrun time and calculate the equivalent time at another
+          course.
         </p>
 
         <div className="flex space-x-4">
@@ -103,20 +102,20 @@ export default function Home() {
         </div>
 
         <button
-          onClick={convertTime}
+          onClick={handleClick}
           className="bg-bg-button hover:bg-bg-button-hover w-full rounded-lg py-3 text-lg font-semibold transition focus:ring-2 focus:outline-none"
         >
-          Convert
+          Calculate
         </button>
 
         {error && (
           <p className="text-text-error text-center font-bold">{error}</p>
         )}
 
-        {adjustedTime && (
+        {estimatedTime && (
           <p className="text-center text-xl">
             Estimated time at {targetParkrun}:{" "}
-            <span className="text-2xl font-semibold">{adjustedTime}</span>
+            <span className="text-2xl font-semibold">{estimatedTime}</span>
           </p>
         )}
       </div>
