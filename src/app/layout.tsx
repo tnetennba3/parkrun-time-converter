@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Parkrun Time Converter',
-  description: 'Convert your parkrun times between courses!',
+  title: "Parkrun Time Converter",
+  description: "Convert your parkrun times between courses!",
 };
 
 export default function RootLayout({

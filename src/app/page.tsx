@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
+import { useState } from "react";
 
-import sss from '@/data/sss';
-import { calculateAdjustedTime } from '@/utils/calculateAdjustedTime';
+import sss from "@/data/sss";
+import { calculateAdjustedTime } from "@/utils/calculateAdjustedTime";
 
 export default function Home() {
-  const [minutes, setMinutes] = useState('');
-  const [seconds, setSeconds] = useState('');
-  const [currentParkrun, setCurrentParkrun] = useState('Finsbury Park');
-  const [targetParkrun, setTargetParkrun] = useState('Highbury Fields');
+  const [minutes, setMinutes] = useState("");
+  const [seconds, setSeconds] = useState("");
+  const [currentParkrun, setCurrentParkrun] = useState("Finsbury Park");
+  const [targetParkrun, setTargetParkrun] = useState("Highbury Fields");
   const [adjustedTime, setAdjustedTime] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -19,20 +19,25 @@ export default function Home() {
 
     // Validation checks
     if (isNaN(min) || min < 13) {
-      setError('Please enter a valid number of minutes (13 or more).');
+      setError("Minutes must be 13 or more.");
       setAdjustedTime(null);
       return;
     }
 
     if (isNaN(sec) || sec < 0 || sec >= 60) {
-      setError('Seconds must be between 0 and 59.');
+      setError("Seconds must be between 0 and 59.");
       setAdjustedTime(null);
       return;
     }
 
     setError(null); // Clear any previous error
 
-    const adjusted = calculateAdjustedTime(min, sec, sss[currentParkrun], sss[targetParkrun]);
+    const adjusted = calculateAdjustedTime(
+      min,
+      sec,
+      sss[currentParkrun],
+      sss[targetParkrun],
+    );
     setAdjustedTime(adjusted);
   };
 
