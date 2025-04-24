@@ -1,14 +1,14 @@
 import "@mantine/core/styles.css";
 import "./globals.css";
 
-import type { Metadata } from "next";
 import {
   ColorSchemeScript,
-  MantineProvider,
-  mantineHtmlProps,
-  createTheme,
   colorsTuple,
+  createTheme,
+  mantineHtmlProps,
+  MantineProvider,
 } from "@mantine/core";
+import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Parkrun Calculator",
