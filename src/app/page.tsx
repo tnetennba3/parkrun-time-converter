@@ -1,6 +1,17 @@
 "use client";
 
 import { useState } from "react";
+import {
+  TextInput,
+  Select,
+  Button,
+  Container,
+  Title,
+  Text,
+  Space,
+  Group,
+  Paper,
+} from "@mantine/core";
 
 import sss from "@/data/sss";
 import { calculateEstimatedTime } from "@/utils/calculateEstimatedTime";
@@ -41,84 +52,73 @@ export default function Home() {
     setEstimatedTime(adjusted);
   };
 
+  const parkruns = Object.keys(sss);
+
   return (
-    <main className="flex min-h-screen items-center justify-center p-4">
-      <div className="border-border-surface bg-bg-surface w-full max-w-xl space-y-6 rounded-2xl border p-8 shadow-lg sm:p-12">
-        <h1 className="text-center text-3xl font-bold">Parkrun Calculator</h1>
-        <p className="text-text-subdued text-center">
+    <Container size="xs">
+      <Space h="xl" />
+
+      <Paper shadow="md" radius="md" p="xl">
+        <Title ta="center">Parkrun Calculator</Title>
+        <Text ta="center" c="dimmed" mt="sm">
           Enter your parkrun time and calculate the equivalent time at another
           course.
-        </p>
+        </Text>
 
-        <div className="flex space-x-4">
-          <label className="flex-1">
-            <span className="mb-1 block font-medium">Minutes:</span>
-            <input
-              type="number"
-              value={minutes}
-              onChange={(e) => setMinutes(e.target.value)}
-              className="border-border-input bg-bg-input w-full rounded-lg border p-2 focus:ring-2 focus:outline-none"
-            />
-          </label>
-          <label className="flex-1">
-            <span className="mb-1 block font-medium">Seconds:</span>
-            <input
-              type="number"
-              value={seconds}
-              onChange={(e) => setSeconds(e.target.value)}
-              className="border-border-input bg-bg-input w-full rounded-lg border p-2 focus:ring-2 focus:outline-none"
-            />
-          </label>
-        </div>
+        <Space h="xl" />
 
-        <div>
-          <label className="mb-1 block font-medium">Current Parkrun:</label>
-          <select
-            value={currentParkrun}
-            onChange={(e) => setCurrentParkrun(e.target.value)}
-            className="border-border-input bg-bg-input w-full rounded-lg border p-2 focus:ring-2 focus:outline-none"
-          >
-            {Object.keys(sss).map((parkrun) => (
-              <option key={parkrun} value={parkrun}>
-                {parkrun}
-              </option>
-            ))}
-          </select>
-        </div>
+        <Group grow>
+          <TextInput
+            label="Minutes"
+            placeholder="e.g. 25"
+            value={minutes}
+            onChange={(event) => setMinutes(event.currentTarget.value)}
+            mb="sm"
+          />
 
-        <div>
-          <label className="mb-1 block font-medium">Target Parkrun:</label>
-          <select
-            value={targetParkrun}
-            onChange={(e) => setTargetParkrun(e.target.value)}
-            className="border-border-input bg-bg-input w-full rounded-lg border p-2 focus:ring-2 focus:outline-none"
-          >
-            {Object.keys(sss).map((parkrun) => (
-              <option key={parkrun} value={parkrun}>
-                {parkrun}
-              </option>
-            ))}
-          </select>
-        </div>
+          <TextInput
+            label="Seconds"
+            placeholder="e.g. 30"
+            value={seconds}
+            onChange={(event) => setSeconds(event.currentTarget.value)}
+            mb="sm"
+          />
+        </Group>
 
-        <button
-          onClick={handleClick}
-          className="bg-bg-button hover:bg-bg-button-hover w-full rounded-lg py-3 text-lg font-semibold transition focus:ring-2 focus:outline-none"
-        >
-          Calculate
-        </button>
+        <Select
+          label="Current Parkrun"
+          data={parkruns}
+          value={currentParkrun}
+          onChange={(value) => setCurrentParkrun(value || "")}
+          searchable
+          mb="sm"
+        />
+
+        <Select
+          label="Target Parkrun"
+          data={parkruns}
+          value={targetParkrun}
+          onChange={(value) => setTargetParkrun(value || "")}
+          searchable
+          mb="sm"
+        />
+
+        <Button fullWidth onClick={handleClick} mt="xl">
+          Convert
+        </Button>
 
         {error && (
-          <p className="text-text-error text-center font-bold">{error}</p>
+          <Text c="error" mt="md" fw="bold">
+            {error}
+          </Text>
         )}
 
         {estimatedTime && (
-          <p className="text-center text-xl">
-            Estimated time at {targetParkrun}:{" "}
-            <span className="text-2xl font-semibold">{estimatedTime}</span>
-          </p>
+          <Text ta="center" mt="xl" size="lg" fw={500}>
+            Estimated time at {targetParkrun}: {estimatedTime}
+          </Text>
         )}
-      </div>
-    </main>
+      </Paper>
+    </Container>
   );
 }

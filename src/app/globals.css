@@ -1,16 +1,9 @@
-@theme inline {
-  --color-*: initial;
+:root[data-mantine-color-scheme="light"] body {
+  background-color: var(--mantine-color-gray-0);
+}
 
-  --color-bg-page: #f3f6f9;
-  --color-bg-surface: #fff;
-  --color-bg-input: #f9fafc;
-  --color-bg-button: #00ceae;
-  --color-bg-button-hover: #4dddc6;
-
-  --color-border-surface: #e4e7eb;
-  --color-border-input: #e5e8eb;
-
-  --color-text-base: #000;
-  --color-text-subdued: #4a5565;
-  --color-text-error: #f61a5e;
+:root[data-mantine-color-scheme="dark"] body {
+  --mantine-color-text: var(--mantine-color-gray-1);
+  --mantine-color-dimmed: var(--mantine-color-dark-1);
+  background-color: var(--mantine-color-dark-9);
 }

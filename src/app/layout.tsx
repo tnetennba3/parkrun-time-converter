@@ -1,21 +1,40 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import "@mantine/core/styles.css";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+import type { Metadata } from "next";
+import {
+  ColorSchemeScript,
+  MantineProvider,
+  mantineHtmlProps,
+  createTheme,
+  colorsTuple,
+} from "@mantine/core";
 
 export const metadata: Metadata = {
   title: "Parkrun Calculator",
   description: "Calculate your parkrun time for different courses!",
 };
+
+const theme = createTheme({
+  primaryColor: "parkrun-turquoise",
+  primaryShade: 6,
+  colors: {
+    "parkrun-turquoise": [
+      "#99ebdf",
+      "#80e7d7",
+      "#66e2ce",
+      "#4dddc6",
+      "#33d8be",
+      "#19d3b6",
+      "#00ceae",
+      "#00b99d",
+      "#00a58b",
+      "#00907a",
+    ],
+    "error": colorsTuple("#f61a5e"),
+  },
+  autoContrast: true,
+});
 
 export default function RootLayout({
   children,
@@ -23,11 +42,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} bg-bg-page text-text-base antialiased`}
-      >
-        {children}
+    <html lang="en" {...mantineHtmlProps}>
+      <head>
+        <ColorSchemeScript defaultColorScheme="auto" />
+      </head>
+      <body className="antialiased">
+        <MantineProvider theme={theme} defaultColorScheme="auto">
+          {children}
+        </MantineProvider>
       </body>
     </html>
   );
