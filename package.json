@@ -16,7 +16,6 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
-    "@tailwindcss/postcss": "^4",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",
@@ -29,8 +28,6 @@
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
     "prettier": "^3.5.3",
-    "prettier-plugin-tailwindcss": "^0.6.11",
-    "tailwindcss": "^4",
     "ts-jest": "^29.3.2",
     "typescript": "^5"
   }
