@@ -1,9 +1,14 @@
+:root {
+  --input-error-size: var(--mantine-font-size-sm);
+}
+
 :root[data-mantine-color-scheme="light"] body {
+  --mantine-color-error: var(--mantine-color-red-8);
   background-color: var(--mantine-color-gray-0);
 }
 
 :root[data-mantine-color-scheme="dark"] body {
   --mantine-color-text: var(--mantine-color-gray-1);
-  --mantine-color-dimmed: var(--mantine-color-dark-1);
+  --mantine-color-error: var(--mantine-color-red-5);
   background-color: var(--mantine-color-dark-9);
 }

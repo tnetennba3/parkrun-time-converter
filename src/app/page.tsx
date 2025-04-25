@@ -4,50 +4,50 @@ import {
   Button,
   Container,
   Group,
+  NumberInput,
   Paper,
   Select,
   Space,
   Text,
-  TextInput,
   Title,
 } from "@mantine/core";
+import { isInRange, useForm } from "@mantine/form";
 import { useState } from "react";
 
 import sss from "@/data/sss";
 import { calculateEstimatedTime } from "@/utils/calculateEstimatedTime";
 
 export default function Home() {
-  const [minutes, setMinutes] = useState("");
-  const [seconds, setSeconds] = useState("");
-  const [currentParkrun, setCurrentParkrun] = useState("Finsbury Park");
-  const [targetParkrun, setTargetParkrun] = useState("Highbury Fields");
   const [estimatedTime, setEstimatedTime] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
 
-  const handleClick = () => {
-    const min = parseInt(minutes);
-    const sec = parseInt(seconds);
+  const form = useForm({
+    mode: "uncontrolled",
+    validateInputOnBlur: true,
+    initialValues: {
+      minutes: "",
+      seconds: "",
+      currentParkrun: "Bushy Park",
+      targetParkrun: "Highbury Fields",
+    },
 
-    // Validation checks
-    if (isNaN(min) || min < 13) {
-      setError("Minutes must be 13 or more.");
-      setEstimatedTime(null);
-      return;
-    }
+    validate: {
+      minutes: (value) =>
+        isNaN(Number(value)) || Number(value) < 13
+          ? "Minutes must be 13 or more"
+          : null,
+      seconds: isInRange(
+        { min: 0, max: 59 },
+        "Seconds must be between 0 and 59",
+      ),
+    },
+  });
 
-    if (isNaN(sec) || sec < 0 || sec >= 60) {
-      setError("Seconds must be between 0 and 59.");
-      setEstimatedTime(null);
-      return;
-    }
-
-    setError(null); // Clear any previous error
-
+  const handleSubmit = (values: typeof form.values) => {
     const adjusted = calculateEstimatedTime(
-      min,
-      sec,
-      sss[currentParkrun],
-      sss[targetParkrun],
+      Number(values.minutes),
+      Number(values.seconds),
+      sss[values.currentParkrun],
+      sss[values.targetParkrun],
     );
     setEstimatedTime(adjusted);
   };
@@ -59,65 +59,66 @@ export default function Home() {
       <Space h="xl" />
 
       <Paper shadow="md" radius="md" p="xl">
-        <Title ta="center">Parkrun Calculator</Title>
-        <Text ta="center" c="dimmed" mt="sm">
-          Enter your parkrun time and calculate the equivalent time at another
-          course.
-        </Text>
+        <form onSubmit={form.onSubmit(handleSubmit)}>
+          <Title ta="center">Parkrun Calculator</Title>
+          <Text ta="center" c="gray-text" mt="sm">
+            Enter your parkrun time and calculate the equivalent time at another
+            course.
+          </Text>
 
-        <Space h="xl" />
+          <Space h="xl" />
 
-        <Group grow>
-          <TextInput
-            label="Minutes"
-            placeholder="e.g. 25"
-            value={minutes}
-            onChange={(event) => setMinutes(event.currentTarget.value)}
+          <Group grow align="flex-start">
+            <NumberInput
+              mb="sm"
+              label="Minutes"
+              placeholder="e.g. 25"
+              clampBehavior="none"
+              min={0}
+              key={form.key("minutes")}
+              {...form.getInputProps("minutes")}
+            />
+
+            <NumberInput
+              mb="sm"
+              label="Seconds"
+              placeholder="e.g. 30"
+              min={0}
+              max={59}
+              clampBehavior="none"
+              key={form.key("seconds")}
+              {...form.getInputProps("seconds")}
+            />
+          </Group>
+
+          <Select
             mb="sm"
+            searchable
+            label="Current Parkrun"
+            data={parkruns}
+            key={form.key("currentParkrun")}
+            {...form.getInputProps("currentParkrun")}
           />
 
-          <TextInput
-            label="Seconds"
-            placeholder="e.g. 30"
-            value={seconds}
-            onChange={(event) => setSeconds(event.currentTarget.value)}
+          <Select
             mb="sm"
+            searchable
+            label="Target Parkrun"
+            data={parkruns}
+            key={form.key("targetParkrun")}
+            {...form.getInputProps("targetParkrun")}
           />
-        </Group>
 
-        <Select
-          label="Current Parkrun"
-          data={parkruns}
-          value={currentParkrun}
-          onChange={(value) => setCurrentParkrun(value || "")}
-          searchable
-          mb="sm"
-        />
+          <Button fullWidth mt="xl" type="submit">
+            Calculate
+          </Button>
 
-        <Select
-          label="Target Parkrun"
-          data={parkruns}
-          value={targetParkrun}
-          onChange={(value) => setTargetParkrun(value || "")}
-          searchable
-          mb="sm"
-        />
-
-        <Button fullWidth onClick={handleClick} mt="xl">
-          Convert
-        </Button>
-
-        {error && (
-          <Text c="error" mt="md" fw="bold">
-            {error}
-          </Text>
-        )}
-
-        {estimatedTime && (
-          <Text ta="center" mt="xl" size="lg" fw={500}>
-            Estimated time at {targetParkrun}: {estimatedTime}
-          </Text>
-        )}
+          {estimatedTime && (
+            <Text ta="center" mt="xl" size="lg" fw={500}>
+              Estimated time at {form.values.currentParkrun}: {estimatedTime}
+            </Text>
+          )}
+        </form>
       </Paper>
     </Container>
   );

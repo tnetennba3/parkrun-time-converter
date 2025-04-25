@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@mantine/core": "^7.17.5",
+    "@mantine/form": "^7.17.5",
     "@mantine/hooks": "^7.17.5",
     "next": "15.3.1",
     "react": "^19.0.0",
