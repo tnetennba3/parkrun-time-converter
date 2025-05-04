@@ -9,6 +9,7 @@ import {
   Select,
   Space,
   Text,
+  TextInput,
   Title,
 } from "@mantine/core";
 import { isInRange, useForm } from "@mantine/form";
@@ -50,6 +51,14 @@ export default function Home() {
       sss[values.targetParkrun],
     );
     setEstimatedTime(adjusted);
+  };
+
+  const getParkrunResults = async (parkrunId: string) => {
+    const res = await fetch(`/api/parkrunners/${parkrunId}`);
+    if (!res.ok) throw new Error("Failed to fetch");
+    const data = await res.json();
+    console.log(data);
+    return data.results;
   };
 
   const parkruns = Object.keys(sss);
@@ -119,6 +128,10 @@ export default function Home() {
             </Text>
           )}
         </form>
+        <TextInput
+          label="Parkrun ID"
+          onBlur={(event) => getParkrunResults(event.currentTarget.value)}
+        />
       </Paper>
     </Container>
   );
