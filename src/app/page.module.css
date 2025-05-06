@@ -1,0 +1,12 @@
+.page {
+  height: 100%;
+}
+
+.container {
+  flex: 1;
+  padding-top: 4.5rem;
+}
+
+.calculator {
+  background-color: var(--secondary-bg-color);
+}
