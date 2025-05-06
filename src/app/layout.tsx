@@ -3,7 +3,6 @@ import "./globals.css";
 
 import {
   ColorSchemeScript,
-  colorsTuple,
   createTheme,
   mantineHtmlProps,
   MantineProvider,
@@ -16,23 +15,8 @@ export const metadata: Metadata = {
 };
 
 const theme = createTheme({
-  primaryColor: "parkrun-turquoise",
-  primaryShade: 6,
-  colors: {
-    "parkrun-turquoise": [
-      "#99ebdf",
-      "#80e7d7",
-      "#66e2ce",
-      "#4dddc6",
-      "#33d8be",
-      "#19d3b6",
-      "#00ceae",
-      "#00b99d",
-      "#00a58b",
-      "#00907a",
-    ],
-    "error": colorsTuple("#f61a5e"),
-  },
+  primaryColor: "indigo",
+  primaryShade: { light: 2, dark: 3 },
   autoContrast: true,
 });
 

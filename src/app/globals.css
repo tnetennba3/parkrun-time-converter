@@ -1,14 +1,22 @@
+html,
+body {
+  height: 100%;
+}
+
 :root {
+  --button-fz: var(--mantine-font-size-md);
   --input-error-size: var(--mantine-font-size-sm);
 }
 
 :root[data-mantine-color-scheme="light"] body {
   --mantine-color-error: var(--mantine-color-red-8);
-  background-color: var(--mantine-color-gray-0);
+  --secondary-bg-color: var(--mantine-color-gray-0);
+  background-color: var(--mantine-color-white);
 }
 
 :root[data-mantine-color-scheme="dark"] body {
   --mantine-color-text: var(--mantine-color-gray-1);
   --mantine-color-error: var(--mantine-color-red-5);
-  background-color: var(--mantine-color-dark-9);
+  --secondary-bg-color: var(--mantine-color-dark-9);
+  background-color: var(--mantine-color-dark-8);
 }
