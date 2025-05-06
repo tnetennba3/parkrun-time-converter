@@ -2,8 +2,9 @@
 
 import { Container, Flex } from "@mantine/core";
 
-import { Calculator } from "@/components/calculator";
 import classes from "./page.module.css";
+
+import { Calculator } from "@/components/calculator";
 
 export default function Home() {
   return (
