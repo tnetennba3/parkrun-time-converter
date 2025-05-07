@@ -10,6 +10,9 @@ body {
 
 :root[data-mantine-color-scheme="light"] body {
   --mantine-color-error: var(--mantine-color-red-8);
+  --mantine-color-dimmed: var(--mantine-color-gray-7);
+  --mantine-color-anchor: var(--mantine-color-indigo-9);
+  --secondary-shade: var(--mantine-color-indigo-1);
   --secondary-bg-color: var(--mantine-color-gray-0);
   background-color: var(--mantine-color-white);
 }
@@ -17,6 +20,9 @@ body {
 :root[data-mantine-color-scheme="dark"] body {
   --mantine-color-text: var(--mantine-color-gray-1);
   --mantine-color-error: var(--mantine-color-red-5);
+  --mantine-color-dimmed: var(--mantine-color-gray-4);
+  --mantine-color-anchor: var(--mantine-color-indigo-3);
+  --secondary-shade: var(--mantine-color-indigo-2);
   --secondary-bg-color: var(--mantine-color-dark-9);
   background-color: var(--mantine-color-dark-8);
 }

@@ -4,12 +4,14 @@ import {
   Group,
   NumberInput,
   Select,
-  Space,
   Text,
   Title,
 } from "@mantine/core";
 import { isInRange, useForm } from "@mantine/form";
+import { IconCalculator } from "@tabler/icons-react";
 import { useState } from "react";
+
+import { EstimatedTime } from "./EstimatedTime";
 
 import sss from "@/data/sss";
 import { calculateEstimatedTime } from "@/utils/calculateEstimatedTime";
@@ -42,24 +44,25 @@ export const Calculator = () => {
   });
 
   const handleSubmit = (values: typeof form.values) => {
-    const adjusted = calculateEstimatedTime(
+    const _estimatedTime = calculateEstimatedTime(
       Number(values.minutes),
       Number(values.seconds),
       sss[values.currentParkrun],
       sss[values.targetParkrun],
     );
-    setEstimatedTime(adjusted);
+    setEstimatedTime(_estimatedTime);
   };
 
   return (
     <Container size="xs">
       <form onSubmit={form.onSubmit(handleSubmit)}>
-        <Title ta="center">Calculator</Title>
-        <Text ta="center" c="gray-text" mt="sm">
+        <Group justify="center" gap="xs">
+          <Title>Calculator</Title>
+          <IconCalculator size={36} />
+        </Group>
+        <Text c="dimmed" mt="lg" mb="sm">
           See what your parkrun time would be on a different course.
         </Text>
-
-        <Space h="xl" />
 
         <Group grow align="flex-start">
           <NumberInput
@@ -102,14 +105,15 @@ export const Calculator = () => {
           {...form.getInputProps("targetParkrun")}
         />
 
-        <Button fullWidth mt="xl" type="submit">
+        <Button fullWidth mt="lg" type="submit">
           Estimate Time
         </Button>
 
         {estimatedTime && (
-          <Text ta="center" mt="xl" size="lg" fw={500}>
-            Estimated time at {form.values.currentParkrun}: {estimatedTime}
-          </Text>
+          <EstimatedTime
+            targetParkrun={form.getValues().targetParkrun}
+            estimatedTime={estimatedTime}
+          />
         )}
       </form>
     </Container>
