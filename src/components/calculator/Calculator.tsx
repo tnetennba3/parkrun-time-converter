@@ -54,7 +54,7 @@ export const Calculator = () => {
   };
 
   return (
-    <Container size="xs" mx="lg">
+    <Container size="xs" m="auto" px="lg">
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <Group justify="center" gap="xs">
           <Title>Calculator</Title>
