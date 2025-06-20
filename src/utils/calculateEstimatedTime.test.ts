@@ -5,15 +5,15 @@ describe("calculateEstimatedTime", () => {
     expect(calculateEstimatedTime(30, 0, 1.4, 1.4)).toBe("30m 0s");
   });
 
-  it("calculates time correctly for easier course", () => {
+  it("calculates time correctly for slightly easier course", () => {
     expect(calculateEstimatedTime(30, 0, 1.6, 1.4)).toBe("29m 54s");
   });
 
-  it("calculates time correctly for harder course", () => {
-    expect(calculateEstimatedTime(30, 0, 1.4, 3.4)).toBe("31m 0s");
+  it("calculates time correctly for much harder course", () => {
+    expect(calculateEstimatedTime(30, 2, 1.4, 4.5)).toBe("32m 22s");
   });
 
-  it("handles seconds correctly", () => {
-    expect(calculateEstimatedTime(29, 30, 1.4, 1.5)).toBe("29m 33s");
+  it("calculates the same original time when inputs are reveresed", () => {
+    expect(calculateEstimatedTime(32, 22, 4.5, 1.4)).toBe("30m 2s");
   });
 });
