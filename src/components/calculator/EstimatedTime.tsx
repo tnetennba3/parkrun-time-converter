@@ -72,8 +72,8 @@ export const EstimatedTime = ({
           This score reflects how fast or slow each parkrun is. To estimate your
           time at a different parkrun, we adjust your original time based on the
           difference in SSS between the two courses. For example, a 1-point SSS
-          difference adds about 30 seconds to a 20-minute time, 35 seconds for a
-          25-minute time, and 40 seconds for a 30-minute time.
+          difference adds 30 seconds to a 20 minute time, 35 seconds to a 25
+          minute time, and 40 seconds to a 30 minute time.
         </Text>
       </Collapse>
     </>

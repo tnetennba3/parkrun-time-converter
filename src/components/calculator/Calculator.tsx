@@ -13,7 +13,7 @@ import { useState } from "react";
 
 import { EstimatedTime } from "./EstimatedTime";
 
-import sss from "@/data/sss";
+import { sss } from "@/data/uk_parkrun_sss";
 import { calculateEstimatedTime } from "@/utils/calculateEstimatedTime";
 
 export const Calculator = () => {
@@ -54,7 +54,7 @@ export const Calculator = () => {
   };
 
   return (
-    <Container size="xs">
+    <Container size="xs" mx="lg">
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <Group justify="center" gap="xs">
           <Title>Calculator</Title>
