@@ -1,4 +1,10 @@
-const sss: Record<string, number> = {
+/*
+ * Standard Scratch Scores (SSS) representing the relative difficulty
+ * of every parkrun in the UK. The lower the number, the faster the
+ * course.
+ * https://www.thepowerof10.info/content/itemdisplay.aspx?itemid=1706&f
+ */
+export const sss: Record<string, number> = {
   "Abbey Park": 1.6,
   "Aberbeeg": 1.2,
   "Aberdare": 2,
@@ -836,5 +842,3 @@ const sss: Record<string, number> = {
   "Yarborough Leisure Centre": 1.3,
   "York": 1.8,
 };
-
-export default sss;
