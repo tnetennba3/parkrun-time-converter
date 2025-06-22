@@ -8,10 +8,15 @@ import {
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { IconChartLine } from "@tabler/icons-react";
-// import axios from "axios";
+import axios from "axios";
 import { useState } from "react";
 
 import { ParkrunResults } from "./ParkrunResults";
+
+import { sss } from "@/data/uk_parkrun_sss";
+import { adjustParkrunResult } from "@/lib/adjustParkrunResult";
+import { findMostVisitedParkrun } from "@/lib/findMostVisitedParkrun";
+import type { AdjustedParkrunResult, ParkrunResult } from "@/types";
 
 export const Chart = () => {
   const form = useForm({
@@ -28,25 +33,20 @@ export const Chart = () => {
   });
 
   const [parkrunData, setParkrunData] = useState<
-    | { date: string; time: number; course: string; originalTime?: number }[]
-    | null
+    AdjustedParkrunResult[] | null
   >(null);
 
   const handleSubmit = async ({ parkrunId }: typeof form.values) => {
-    // const { data } = await axios.get(`/api/parkrunners/${parkrunId}`);
+    const { data } = await axios.get<ParkrunResult[]>(
+      `/api/parkrunners/${parkrunId}`,
+    );
+    const ukParkrunResults = data.filter(({ parkrun }) => parkrun in sss);
+    const targetParkrun = findMostVisitedParkrun(ukParkrunResults);
+    const parkrunData = ukParkrunResults.map((result) =>
+      adjustParkrunResult(result, targetParkrun),
+    );
 
-    // setParkrunData(data.results.map(({ date, time }) => ({ date, time })));
-
-    setParkrunData([
-      { date: "2024-01-23", time: 2083, course: "Bushy Park" },
-      { date: "2024-03-23", time: 1983, course: "Bushy Park" },
-      {
-        date: "2024-04-06",
-        time: 1859,
-        course: "Highbury Fields",
-        originalTime: 1910,
-      },
-    ]);
+    setParkrunData(parkrunData);
   };
 
   return (

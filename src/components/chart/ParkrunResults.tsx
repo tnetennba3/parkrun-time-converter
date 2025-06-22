@@ -10,9 +10,10 @@ import {
   Tooltip,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
-
 import "chartjs-adapter-luxon";
+
 import { formatParkrunTime } from "@/lib/formatParkrunTime";
+import type { AdjustedParkrunResult } from "@/types";
 
 ChartJS.register(
   LineElement,
@@ -25,14 +26,7 @@ ChartJS.register(
   Title,
 );
 
-type Data = {
-  date: string;
-  time: number;
-  course: string;
-  originalTime?: number;
-};
-
-export const ParkrunResults = ({ data }: { data: Data[] }) => {
+export const ParkrunResults = ({ data }: { data: AdjustedParkrunResult[] }) => {
   const chartData = {
     labels: data.map((d) => d.date.toLocaleString()),
     datasets: [
@@ -54,15 +48,15 @@ export const ParkrunResults = ({ data }: { data: Data[] }) => {
         displayColors: false,
         callbacks: {
           label: (context: { dataIndex: number }) => {
-            const { time, course, originalTime } = data[context.dataIndex];
+            const { time, parkrun, originalTime } = data[context.dataIndex];
 
             if (originalTime)
               return [
                 `Time: ${formatParkrunTime(time)}`,
-                `Original: ${formatParkrunTime(originalTime)} (${course})`,
+                `Original: ${formatParkrunTime(originalTime)} (${parkrun})`,
               ];
 
-            return `Time: ${formatParkrunTime(time)} (${course})`;
+            return `Time: ${formatParkrunTime(time)} (${parkrun})`;
           },
         },
       },
@@ -77,7 +71,6 @@ export const ParkrunResults = ({ data }: { data: Data[] }) => {
       x: {
         type: "time" as const,
         time: {
-          unit: "month" as const,
           tooltipFormat: "DD",
         },
       },

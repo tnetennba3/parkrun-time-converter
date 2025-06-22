@@ -7,13 +7,13 @@ describe("adjustTimeBySSS", () => {
     );
   });
 
-  it("adjusts time correctly for slightly easier course", () => {
+  it("adjusts time correctly for slightly easier parkrun course", () => {
     expect(adjustTimeBySSS(30 * 60, "Oaklands", "Long Eaton")).toBe(
       29 * 60 + 54,
     );
   });
 
-  it("adjusts time correctly for much harder course", () => {
+  it("adjusts time correctly for much harder parkrun course", () => {
     expect(adjustTimeBySSS(30 * 60 + 2, "Long Eaton", "Rostrevor")).toBe(
       32 * 60 + 22,
     );

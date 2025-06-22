@@ -1,11 +1,12 @@
 import { handicapToTime } from "@/data/handicap_to_time";
 import { timeToHandicap } from "@/data/time_to_handicap";
 import { sss } from "@/data/uk_parkrun_sss";
+import type { Parkrun } from "@/types";
 
 export const adjustTimeBySSS = (
   time: number,
-  currentParkrun: keyof typeof sss,
-  targetParkrun: keyof typeof sss,
+  currentParkrun: Parkrun,
+  targetParkrun: Parkrun,
 ): number => {
   const sssDifference = sss[targetParkrun] - sss[currentParkrun];
 
