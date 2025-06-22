@@ -14,10 +14,10 @@ import { useState } from "react";
 import { EstimatedTime } from "./EstimatedTime";
 
 import { sss } from "@/data/uk_parkrun_sss";
-import { calculateEstimatedTime } from "@/utils/calculateEstimatedTime";
+import { adjustTimeBySSS } from "@/lib/adjustTimeBySSS";
 
 export const Calculator = () => {
-  const [estimatedTime, setEstimatedTime] = useState<string | null>(null);
+  const [estimatedTime, setEstimatedTime] = useState<number | null>(null);
 
   const parkruns = Object.keys(sss);
 
@@ -27,8 +27,8 @@ export const Calculator = () => {
     initialValues: {
       minutes: "",
       seconds: "",
-      currentParkrun: "Bushy Park",
-      targetParkrun: "Highbury Fields",
+      currentParkrun: "Bushy Park" as keyof typeof sss,
+      targetParkrun: "Highbury Fields" as keyof typeof sss,
     },
 
     validate: {
@@ -44,13 +44,13 @@ export const Calculator = () => {
   });
 
   const handleSubmit = (values: typeof form.values) => {
-    const _estimatedTime = calculateEstimatedTime(
-      Number(values.minutes),
-      Number(values.seconds),
-      sss[values.currentParkrun],
-      sss[values.targetParkrun],
+    const time = Number(values.minutes) * 60 + Number(values.seconds);
+    const _adjustedTime = adjustTimeBySSS(
+      time,
+      values.currentParkrun,
+      values.targetParkrun,
     );
-    setEstimatedTime(_estimatedTime);
+    setEstimatedTime(_adjustedTime);
   };
 
   return (

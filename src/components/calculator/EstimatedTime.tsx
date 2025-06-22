@@ -13,6 +13,8 @@ import {
   IconRun,
 } from "@tabler/icons-react";
 
+import { formatParkrunTime } from "@/lib/formatParkrunTime";
+
 const ButtonIcon = ({ opened }: { opened: boolean }) =>
   opened ? (
     <IconChevronDown size={21} style={{ marginTop: "2px" }} />
@@ -25,7 +27,7 @@ export const EstimatedTime = ({
   estimatedTime,
 }: {
   targetParkrun: string;
-  estimatedTime: string;
+  estimatedTime: number;
 }) => {
   const [opened, { toggle }] = useDisclosure(false);
 
@@ -45,7 +47,7 @@ export const EstimatedTime = ({
         <Text size="lg">Estimated time at {targetParkrun}:</Text>
         <Group mt="sm" justify="center" gap="xs">
           <Text size="xl" fw="bold">
-            {estimatedTime}
+            {formatParkrunTime(estimatedTime)}
           </Text>
           <IconRun />
         </Group>
