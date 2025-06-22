@@ -10,7 +10,9 @@ import {
   Tooltip,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
+
 import "chartjs-adapter-luxon";
+import { formatParkrunTime } from "@/lib/formatParkrunTime";
 
 ChartJS.register(
   LineElement,
@@ -22,12 +24,6 @@ ChartJS.register(
   Legend,
   Title,
 );
-
-const formatSeconds = (seconds: string | number): string => {
-  const mins = Math.floor(Number(seconds) / 60);
-  const secs = Number(seconds) % 60;
-  return `${mins}:${secs.toString().padStart(2, "0")}`;
-};
 
 type Data = {
   date: string;
@@ -62,11 +58,11 @@ export const ParkrunResults = ({ data }: { data: Data[] }) => {
 
             if (originalTime)
               return [
-                `Time: ${formatSeconds(time)}`,
-                `Original: ${formatSeconds(originalTime)} (${course})`,
+                `Time: ${formatParkrunTime(time)}`,
+                `Original: ${formatParkrunTime(originalTime)} (${course})`,
               ];
 
-            return `Time: ${formatSeconds(time)} (${course})`;
+            return `Time: ${formatParkrunTime(time)} (${course})`;
           },
         },
       },
@@ -74,7 +70,8 @@ export const ParkrunResults = ({ data }: { data: Data[] }) => {
     scales: {
       y: {
         ticks: {
-          callback: (value: string | number) => formatSeconds(value),
+          callback: (value: string | number) =>
+            formatParkrunTime(value as number),
         },
       },
       x: {
