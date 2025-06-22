@@ -15,6 +15,7 @@ import { EstimatedTime } from "./EstimatedTime";
 
 import { sss } from "@/data/uk_parkrun_sss";
 import { adjustTimeBySSS } from "@/lib/adjustTimeBySSS";
+import type { Parkrun } from "@/types";
 
 export const Calculator = () => {
   const [estimatedTime, setEstimatedTime] = useState<number | null>(null);
@@ -27,8 +28,8 @@ export const Calculator = () => {
     initialValues: {
       minutes: "",
       seconds: "",
-      currentParkrun: "Bushy Park" as keyof typeof sss,
-      targetParkrun: "Highbury Fields" as keyof typeof sss,
+      currentParkrun: "Bushy Park" as Parkrun,
+      targetParkrun: "Highbury Fields" as Parkrun,
     },
 
     validate: {
@@ -90,7 +91,7 @@ export const Calculator = () => {
         <Select
           mb="sm"
           searchable
-          label="Current Parkrun"
+          label="Current parkrun"
           data={parkruns}
           key={form.key("currentParkrun")}
           {...form.getInputProps("currentParkrun")}
@@ -99,7 +100,7 @@ export const Calculator = () => {
         <Select
           mb="sm"
           searchable
-          label="Target Parkrun"
+          label="Target parkrun"
           data={parkruns}
           key={form.key("targetParkrun")}
           {...form.getInputProps("targetParkrun")}

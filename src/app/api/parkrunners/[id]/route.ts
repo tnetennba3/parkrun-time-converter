@@ -1,6 +1,10 @@
 import * as cheerio from "cheerio";
 import { NextRequest } from "next/server";
 
+import { formatParkrunDate } from "@/lib/formatParkrunDate";
+import { parseParkrunTime } from "@/lib/parseParkrunTime";
+import type { Parkrun, ParkrunResult } from "@/types";
+
 const PARKRUN_URL = "https://www.parkrun.org.uk/";
 
 // To mimic a real browser
@@ -51,20 +55,20 @@ export async function GET(
     const html = await response.text();
     const $ = cheerio.load(html);
     const table = $('table:has(caption:contains("Results"))');
-    const results: { date: string; event: string; time: string }[] = [];
+    const results: ParkrunResult[] = [];
 
     table.find("tr").each((i, row) => {
       const columns = $(row).find("td");
       if (columns.length > 0) {
-        const event = $(columns[0]).text().trim();
-        const date = $(columns[1]).text().trim();
-        const time = $(columns[4]).text().trim();
+        const parkrun = $(columns[0]).text().trim() as Parkrun;
+        const date = formatParkrunDate($(columns[1]).text().trim());
+        const time = parseParkrunTime($(columns[4]).text().trim());
 
-        results.push({ date, event, time });
+        results.push({ date, parkrun, time });
       }
     });
 
-    return Response.json({ parkrunId, results });
+    return Response.json(results);
   } catch (error) {
     return Response.json(
       {
