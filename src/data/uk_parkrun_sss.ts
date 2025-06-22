@@ -4,7 +4,7 @@
  * course.
  * https://www.thepowerof10.info/content/itemdisplay.aspx?itemid=1706&f
  */
-export const sss: Record<string, number> = {
+export const sss = {
   "Abbey Park": 1.6,
   "Aberbeeg": 1.2,
   "Aberdare": 2,
