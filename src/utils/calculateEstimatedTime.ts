@@ -1,12 +1,12 @@
 import { handicapToTime } from "@/data/handicap_to_time";
 import { timeToHandicap } from "@/data/time_to_handicap";
 
-export function calculateEstimatedTime(
+export const calculateEstimatedTime = (
   minutes: number,
   seconds: number,
   currentSSS: number,
   targetSSS: number,
-): string {
+): string => {
   if (currentSSS === targetSSS) {
     return `${minutes}m ${seconds}s`;
   }
@@ -21,4 +21,4 @@ export function calculateEstimatedTime(
   const adjustedSec = adjustedTime % 60;
 
   return `${adjustedMin}m ${adjustedSec}s`;
-}
+};

@@ -13,7 +13,7 @@ body {
   --mantine-color-dimmed: var(--mantine-color-gray-7);
   --mantine-color-anchor: var(--mantine-color-indigo-9);
   --secondary-shade: var(--mantine-color-indigo-1);
-  --secondary-bg-color: var(--mantine-color-gray-0);
+  --secondary-bg-color: var(--mantine-color-gray-1);
   background-color: var(--mantine-color-white);
 }
 
