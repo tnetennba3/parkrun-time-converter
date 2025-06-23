@@ -13,10 +13,7 @@ import { useState } from "react";
 
 import { ParkrunResults } from "./ParkrunResults";
 
-import { sss } from "@/data/uk_parkrun_sss";
-import { adjustParkrunResult } from "@/lib/adjustParkrunResult";
-import { findMostVisitedParkrun } from "@/lib/findMostVisitedParkrun";
-import type { AdjustedParkrunResult, ParkrunResult } from "@/types";
+import type { ParkrunResult } from "@/types";
 
 export const Chart = () => {
   const form = useForm({
@@ -32,21 +29,15 @@ export const Chart = () => {
     },
   });
 
-  const [parkrunData, setParkrunData] = useState<
-    AdjustedParkrunResult[] | null
-  >(null);
+  const [parkrunResults, setParkrunResults] = useState<ParkrunResult[] | null>(
+    null,
+  );
 
   const handleSubmit = async ({ parkrunId }: typeof form.values) => {
     const { data } = await axios.get<ParkrunResult[]>(
       `/api/parkrunners/${parkrunId}`,
     );
-    const ukParkrunResults = data.filter(({ parkrun }) => parkrun in sss);
-    const targetParkrun = findMostVisitedParkrun(ukParkrunResults);
-    const parkrunData = ukParkrunResults.map((result) =>
-      adjustParkrunResult(result, targetParkrun),
-    );
-
-    setParkrunData(parkrunData);
+    setParkrunResults(data);
   };
 
   return (
@@ -74,7 +65,7 @@ export const Chart = () => {
           </Button>
         </div>
       </form>
-      {parkrunData && <ParkrunResults data={parkrunData} />}
+      {parkrunResults && <ParkrunResults data={parkrunResults} />}
     </Container>
   );
 };

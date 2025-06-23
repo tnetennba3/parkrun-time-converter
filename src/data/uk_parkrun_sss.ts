@@ -842,3 +842,5 @@ export const sss = {
   "Yarborough Leisure Centre": 1.3,
   "York": 1.8,
 };
+
+export const parkruns = Object.keys(sss);

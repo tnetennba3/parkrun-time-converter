@@ -13,14 +13,12 @@ import { useState } from "react";
 
 import { EstimatedTime } from "./EstimatedTime";
 
-import { sss } from "@/data/uk_parkrun_sss";
+import { parkruns } from "@/data/uk_parkrun_sss";
 import { adjustTimeBySSS } from "@/lib/adjustTimeBySSS";
 import type { Parkrun } from "@/types";
 
 export const Calculator = () => {
   const [estimatedTime, setEstimatedTime] = useState<number | null>(null);
-
-  const parkruns = Object.keys(sss);
 
   const form = useForm({
     mode: "uncontrolled",
