@@ -1,3 +1,4 @@
+import axios from "axios";
 import * as cheerio from "cheerio";
 import { NextRequest } from "next/server";
 
@@ -34,26 +35,9 @@ export async function GET(
     }
 
     const url = `${PARKRUN_URL}/parkrunner/${parkrunId}/all/`;
-    const response = await fetch(url, { headers });
+    const response = await axios.get(url, { headers });
 
-    if (response.status === 404)
-      return Response.json(
-        {
-          error: "Parkrunner not found",
-          message: `No results found for parkrun ID ${parkrunId}`,
-        },
-        { status: 404 },
-      );
-
-    if (!response.ok) {
-      return Response.json(
-        { error: "Failed to fetch parkrunner data" },
-        { status: 500 },
-      );
-    }
-
-    const html = await response.text();
-    const $ = cheerio.load(html);
+    const $ = cheerio.load(response.data);
     const table = $('table:has(caption:contains("Results"))');
     const results: ParkrunResult[] = [];
 
@@ -70,6 +54,16 @@ export async function GET(
 
     return Response.json(results);
   } catch (error) {
+    if (axios.isAxiosError(error)) {
+      return Response.json(
+        {
+          error: error.response?.statusText,
+          details: error instanceof Error ? error.message : error,
+        },
+        { status: error.status },
+      );
+    }
+
     return Response.json(
       {
         error: "Internal server error",

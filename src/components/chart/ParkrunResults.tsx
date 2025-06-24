@@ -9,6 +9,7 @@ import {
 } from "@mantine/core";
 import { useState } from "react";
 
+import { ExcludedResults } from "./ExcludedResults";
 import { LineChart } from "./LineChart";
 
 import { parkruns, sss } from "@/data/uk_parkrun_sss";
@@ -18,16 +19,21 @@ import { findMostVisitedParkrun } from "@/lib/findMostVisitedParkrun";
 import type { ParkrunResult } from "@/types";
 
 export const ParkrunResults = ({ data }: { data: ParkrunResult[] }) => {
-  const ukParkrunResults = data.filter(({ parkrun }) => parkrun in sss);
-  const mostVisitedParkrun = findMostVisitedParkrun(ukParkrunResults);
+  const ukResults = data.filter(({ parkrun }) => parkrun in sss);
+  const mostVisitedParkrun = findMostVisitedParkrun(ukResults);
 
   const [targetParkrun, setTargetParkrun] = useState(mostVisitedParkrun);
   const [dateRange, setDateRange] = useState<DateRange>("allTime");
 
-  const filteredByDateRange = filterByDateRange(ukParkrunResults, dateRange);
-  const adjustedParkrunResults = filteredByDateRange.map((result) =>
+  const filteredResults = filterByDateRange(ukResults, dateRange);
+  const adjustedResults = filteredResults.map((result) =>
     adjustParkrunResult(result, targetParkrun),
   );
+  const chartData = adjustedResults.filter((result) => result !== undefined);
+
+  const unrecognisedParkruns = data.length - ukResults.length;
+  const timesOutsideRange = adjustedResults.length - chartData.length;
+  const excludedResults = unrecognisedParkruns + timesOutsideRange;
 
   return (
     <Container mt="lg" px={0} fluid>
@@ -44,7 +50,7 @@ export const ParkrunResults = ({ data }: { data: ParkrunResult[] }) => {
         </Radio.Group>
       </Group>
       <Group mb="xs">
-        <Text size="xs">Adjust times to:</Text>
+        <Text size="xs">Base parkrun:</Text>
         <Select
           searchable
           data={parkruns}
@@ -56,7 +62,14 @@ export const ParkrunResults = ({ data }: { data: ParkrunResult[] }) => {
           }}
         />
       </Group>
-      <LineChart data={adjustedParkrunResults} />
+      <LineChart data={chartData} />
+      {excludedResults > 0 && (
+        <ExcludedResults
+          total={excludedResults}
+          unrecognisedParkruns={unrecognisedParkruns}
+          timesOutsideRange={timesOutsideRange}
+        />
+      )}
     </Container>
   );
 };

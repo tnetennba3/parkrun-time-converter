@@ -7,7 +7,7 @@ export const adjustTimeBySSS = (
   time: number,
   currentParkrun: Parkrun,
   targetParkrun: Parkrun,
-): number => {
+): number | undefined => {
   const sssDifference = sss[targetParkrun] - sss[currentParkrun];
 
   if (sssDifference === 0) {
