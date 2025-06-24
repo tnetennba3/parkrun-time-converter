@@ -24,4 +24,12 @@ describe("adjustTimeBySSS", () => {
       30 * 60 + 2,
     );
   });
+
+  it("returns undefined when adjusted time would be less than 13 minutes", () => {
+    expect(adjustTimeBySSS(13 * 60, "Rostrevor", "Long Eaton")).toBe(undefined);
+  });
+
+  it("returns undefined when adjusted time would be an hour or more", () => {
+    expect(adjustTimeBySSS(59 * 60, "Long Eaton", "Rostrevor")).toBe(undefined);
+  });
 });

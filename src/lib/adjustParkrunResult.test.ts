@@ -30,4 +30,10 @@ describe("adjustParkrunResult", () => {
       parkrunResult,
     );
   });
+
+  it("returns undefined when adjusted time could not be calculated", () => {
+    expect(
+      adjustParkrunResult({ ...parkrunResult, time: 60 * 60 }, "Carlisle"),
+    ).toBe(undefined);
+  });
 });

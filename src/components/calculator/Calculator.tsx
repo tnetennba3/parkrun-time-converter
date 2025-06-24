@@ -18,7 +18,9 @@ import { adjustTimeBySSS } from "@/lib/adjustTimeBySSS";
 import type { Parkrun } from "@/types";
 
 export const Calculator = () => {
-  const [estimatedTime, setEstimatedTime] = useState<number | null>(null);
+  const [estimatedTime, setEstimatedTime] = useState<number | undefined>(
+    undefined,
+  );
 
   const form = useForm({
     mode: "uncontrolled",
@@ -34,7 +36,7 @@ export const Calculator = () => {
       minutes: (value) =>
         isNaN(Number(value)) || Number(value) < 13
           ? "Minutes must be 13 or more"
-          : null,
+          : undefined,
       seconds: isInRange(
         { min: 0, max: 59 },
         "Seconds must be between 0 and 59",

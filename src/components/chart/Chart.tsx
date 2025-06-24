@@ -25,19 +25,25 @@ export const Chart = () => {
 
     validate: {
       parkrunId: (value) =>
-        isNaN(Number(value)) ? "Parkrun ID must be a number" : null,
+        isNaN(Number(value)) ? "Parkrun ID must be a number" : undefined,
     },
   });
 
-  const [parkrunResults, setParkrunResults] = useState<ParkrunResult[] | null>(
-    null,
-  );
+  const [parkrunResults, setParkrunResults] = useState<
+    ParkrunResult[] | undefined
+  >(undefined);
 
   const handleSubmit = async ({ parkrunId }: typeof form.values) => {
-    const { data } = await axios.get<ParkrunResult[]>(
-      `/api/parkrunners/${parkrunId}`,
-    );
-    setParkrunResults(data);
+    try {
+      const { data } = await axios.get<ParkrunResult[]>(
+        `/api/parkrunners/${parkrunId}`,
+      );
+      setParkrunResults(data);
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.status === 404) {
+        form.setFieldError("parkrunId", "Parkrun ID not found");
+      }
+    }
   };
 
   return (
