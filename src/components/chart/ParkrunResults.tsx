@@ -7,7 +7,7 @@ import {
   SelectProps,
   Text,
 } from "@mantine/core";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 
 import { ExcludedResults } from "./ExcludedResults";
 import { LineChart } from "./LineChart";
@@ -15,16 +15,20 @@ import { LineChart } from "./LineChart";
 import { parkruns, sss } from "@/data/uk_parkrun_sss";
 import { adjustParkrunResult } from "@/lib/adjustParkrunResult";
 import { DateRange, filterByDateRange } from "@/lib/filterByDateRange";
-import { findMostVisitedParkrun } from "@/lib/findMostVisitedParkrun";
-import type { ParkrunResult } from "@/types";
+import type { Parkrun, ParkrunResult } from "@/types";
 
-export const ParkrunResults = ({ data }: { data: ParkrunResult[] }) => {
-  const ukResults = data.filter(({ parkrun }) => parkrun in sss);
-  const mostVisitedParkrun = findMostVisitedParkrun(ukResults);
-
-  const [targetParkrun, setTargetParkrun] = useState(mostVisitedParkrun);
+export const ParkrunResults = ({
+  data,
+  targetParkrun,
+  setTargetParkrun,
+}: {
+  data: ParkrunResult[];
+  targetParkrun: Parkrun;
+  setTargetParkrun: Dispatch<SetStateAction<Parkrun | undefined>>;
+}) => {
   const [dateRange, setDateRange] = useState<DateRange>("allTime");
 
+  const ukResults = data.filter(({ parkrun }) => parkrun in sss);
   const filteredResults = filterByDateRange(ukResults, dateRange);
   const adjustedResults = filteredResults.map((result) =>
     adjustParkrunResult(result, targetParkrun),
