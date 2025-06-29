@@ -14,7 +14,7 @@ export const ExcludedResults = ({
   <ExpandableContent
     buttonText={`${total} result${total > 1 && "s"} not shown (why?)`}
   >
-    <List c="dimmed">
+    <List c="dimmed" ml="xs">
       {unrecognisedParkruns > 0 && (
         <List.Item>
           {unrecognisedParkruns}
