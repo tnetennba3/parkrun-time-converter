@@ -19,11 +19,11 @@ import type { Parkrun, ParkrunResult } from "@/types";
 
 export const ParkrunResults = ({
   data,
-  targetParkrun,
+  targetParkrun = "Bushy Park",
   setTargetParkrun,
 }: {
   data: ParkrunResult[];
-  targetParkrun: Parkrun;
+  targetParkrun: Parkrun | undefined;
   setTargetParkrun: Dispatch<SetStateAction<Parkrun | undefined>>;
 }) => {
   const [dateRange, setDateRange] = useState<DateRange>("allTime");
@@ -66,7 +66,13 @@ export const ParkrunResults = ({
           }}
         />
       </Group>
-      <LineChart data={chartData} />
+      {chartData.length ? (
+        <LineChart data={chartData} />
+      ) : (
+        <Text ta="center" fw={600} mt="xl">
+          No data to display
+        </Text>
+      )}
       {excludedResults > 0 && (
         <ExcludedResults
           total={excludedResults}
