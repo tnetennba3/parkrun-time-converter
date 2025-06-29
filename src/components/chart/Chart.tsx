@@ -1,7 +1,9 @@
 import {
+  Box,
   Button,
   Container,
   Group,
+  LoadingOverlay,
   Text,
   TextInput,
   Title,
@@ -31,6 +33,7 @@ export const Chart = () => {
     },
   });
 
+  const [loading, setLoading] = useState(false);
   const [targetParkrun, setTargetParkrun] = useState<Parkrun | undefined>(
     undefined,
   );
@@ -40,6 +43,8 @@ export const Chart = () => {
 
   const handleSubmit = async ({ parkrunId }: typeof form.values) => {
     try {
+      setLoading(true);
+
       const { data } = await axios.get<ParkrunResult[]>(
         `/api/parkrunners/${parkrunId}`,
       );
@@ -48,7 +53,12 @@ export const Chart = () => {
 
       setTargetParkrun(mostVisitedParkrun);
       setParkrunResults(data);
+      setLoading(false);
     } catch (error) {
+      setLoading(false);
+      setTargetParkrun(undefined);
+      setParkrunResults(undefined);
+
       if (axios.isAxiosError(error) && error.status === 404) {
         return form.setFieldError("parkrunId", "Parkrun ID not found");
       }
@@ -81,13 +91,21 @@ export const Chart = () => {
           </Button>
         </div>
       </form>
-      {parkrunResults && (
-        <ParkrunResults
-          data={parkrunResults}
-          targetParkrun={targetParkrun}
-          setTargetParkrun={setTargetParkrun}
+      <Box h="400px" pos="relative">
+        <LoadingOverlay
+          visible={loading}
+          overlayProps={{ blur: 2, backgroundOpacity: 0 }}
+          loaderProps={{ type: "dots" }}
+          transitionProps={{ transition: "fade", duration: 1000 }}
         />
-      )}
+        {parkrunResults && (
+          <ParkrunResults
+            data={parkrunResults}
+            targetParkrun={targetParkrun}
+            setTargetParkrun={setTargetParkrun}
+          />
+        )}
+      </Box>
     </Container>
   );
 };
