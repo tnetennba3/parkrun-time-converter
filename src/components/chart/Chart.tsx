@@ -31,12 +31,12 @@ export const Chart = () => {
     },
   });
 
-  const [parkrunResults, setParkrunResults] = useState<
-    ParkrunResult[] | undefined
-  >(undefined);
   const [targetParkrun, setTargetParkrun] = useState<Parkrun | undefined>(
     undefined,
   );
+  const [parkrunResults, setParkrunResults] = useState<
+    ParkrunResult[] | undefined
+  >(undefined);
 
   const handleSubmit = async ({ parkrunId }: typeof form.values) => {
     try {
@@ -46,12 +46,13 @@ export const Chart = () => {
       const ukResults = data.filter(({ parkrun }) => parkrun in sss);
       const mostVisitedParkrun = findMostVisitedParkrun(ukResults);
 
-      setParkrunResults(data);
       setTargetParkrun(mostVisitedParkrun);
+      setParkrunResults(data);
     } catch (error) {
       if (axios.isAxiosError(error) && error.status === 404) {
-        form.setFieldError("parkrunId", "Parkrun ID not found");
+        return form.setFieldError("parkrunId", "Parkrun ID not found");
       }
+      throw error;
     }
   };
 
@@ -80,7 +81,7 @@ export const Chart = () => {
           </Button>
         </div>
       </form>
-      {parkrunResults && targetParkrun && (
+      {parkrunResults && (
         <ParkrunResults
           data={parkrunResults}
           targetParkrun={targetParkrun}

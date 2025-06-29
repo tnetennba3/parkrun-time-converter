@@ -12,7 +12,7 @@ export const ExcludedResults = ({
   timesOutsideRange: number;
 }) => (
   <ExpandableContent
-    buttonText={`${total} result${total > 1 && "s"} not shown`}
+    buttonText={`${total} result${total > 1 && "s"} not shown (why?)`}
   >
     <List c="dimmed">
       {unrecognisedParkruns > 0 && (

@@ -1,5 +1,7 @@
 import { findMostVisitedParkrun } from "./findMostVisitedParkrun";
 
+import type { ParkrunResult } from "@/types";
+
 describe("findMostVisitedParkrun", () => {
   it("returns the most visited parkrun", () => {
     const parkrunResults = [
@@ -21,5 +23,11 @@ describe("findMostVisitedParkrun", () => {
     ];
 
     expect(findMostVisitedParkrun(parkrunResults)).toBe("Carlisle");
+  });
+
+  it("returns undefined if there are no parkrun results", () => {
+    const parkrunResults: ParkrunResult[] = [];
+
+    expect(findMostVisitedParkrun(parkrunResults)).toBe(undefined);
   });
 });
