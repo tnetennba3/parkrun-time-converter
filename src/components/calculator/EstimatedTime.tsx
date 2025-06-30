@@ -1,5 +1,6 @@
 import { Anchor, Container, Group, Text } from "@mantine/core";
 import { IconRun } from "@tabler/icons-react";
+import { AnimatePresence, motion } from "framer-motion";
 
 import { ExpandableContent } from "../common/ExpandableContent";
 
@@ -8,9 +9,11 @@ import { formatParkrunTime } from "@/lib/formatParkrunTime";
 export const EstimatedTime = ({
   targetParkrun,
   estimatedTime,
+  animationKey,
 }: {
   targetParkrun: string;
   estimatedTime: number;
+  animationKey: number;
 }) => (
   <>
     <Container
@@ -26,10 +29,29 @@ export const EstimatedTime = ({
     >
       <Text size="lg">Estimated time at {targetParkrun}:</Text>
       <Group mt="sm" justify="center" gap="xs">
-        <Text size="xl" fw="bold">
-          {formatParkrunTime(estimatedTime)}
-        </Text>
-        <IconRun />
+        <AnimatePresence mode="wait">
+          <motion.span
+            key={`time-${animationKey}`}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3, duration: 0.3 }}
+          >
+            <Text size="xl" fw="bold">
+              {formatParkrunTime(estimatedTime)}
+            </Text>
+          </motion.span>
+        </AnimatePresence>
+        <AnimatePresence mode="wait">
+          <motion.span
+            key={`icon-${animationKey}`}
+            initial={{ x: -95 }}
+            animate={{ x: 0 }}
+            transition={{ duration: 0.6, ease: "easeInOut" }}
+            style={{ height: "24px" }}
+          >
+            <IconRun />
+          </motion.span>
+        </AnimatePresence>
       </Group>
     </Container>
     <ExpandableContent buttonText="How is this calculated?">

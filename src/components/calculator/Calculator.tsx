@@ -22,6 +22,7 @@ export const Calculator = () => {
   const [estimatedTime, setEstimatedTime] = useState<
     number | undefined | Error
   >(undefined);
+  const [animationKey, setAnimationKey] = useState(0);
 
   const form = useForm({
     mode: "uncontrolled",
@@ -58,6 +59,8 @@ export const Calculator = () => {
     } else {
       setEstimatedTime(_adjustedTime);
     }
+
+    setAnimationKey((prev) => prev + 1); // Force re-animation
   };
 
   return (
@@ -120,6 +123,7 @@ export const Calculator = () => {
           <EstimatedTime
             targetParkrun={form.getValues().targetParkrun}
             estimatedTime={estimatedTime}
+            animationKey={animationKey}
           />
         )}
 
