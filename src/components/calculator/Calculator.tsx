@@ -64,7 +64,7 @@ export const Calculator = () => {
   };
 
   return (
-    <Container size="xs" m="auto" px="lg">
+    <Container size={620} m="auto" px="lg">
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <Group justify="center" gap="xs">
           <Title>Calculator</Title>

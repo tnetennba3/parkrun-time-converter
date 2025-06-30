@@ -1,21 +1,25 @@
 "use client";
 
-import { Container, Flex } from "@mantine/core";
-
-import classes from "./page.module.css";
+import { Box, Flex } from "@mantine/core";
 
 import { Calculator } from "@/components/calculator/Calculator";
 import { Chart } from "@/components/chart/Chart";
 
 export default function Home() {
   return (
-    <Flex className={classes.page}>
-      <Container className={classes.container}>
+    <Flex gap={0} mih="100%" wrap="wrap">
+      <Box miw={356} pt="4rem" pb="4rem" style={{ flex: 1 }}>
         <Chart />
-      </Container>
-      <Container className={classes.container} bg="var(--secondary-bg-color)">
+      </Box>
+      <Box
+        miw={356}
+        pt="4rem"
+        pb="4rem"
+        bg="var(--secondary-bg-color)"
+        style={{ flex: 1 }}
+      >
         <Calculator />
-      </Container>
+      </Box>
     </Flex>
   );
 }

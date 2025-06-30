@@ -1,11 +1,12 @@
 import {
-  Container,
+  Box,
   Group,
   Radio,
   RadioGroupProps,
   Select,
   SelectProps,
   Text,
+  Title,
 } from "@mantine/core";
 import { Dispatch, SetStateAction, useState } from "react";
 
@@ -40,7 +41,7 @@ export const ParkrunResults = ({
   const excludedResults = unrecognisedParkruns + timesOutsideRange;
 
   return (
-    <Container mt="lg" px={0} fluid>
+    <Box mt="lg">
       <Group mb="xs">
         <Text size="xs">Date range:</Text>
         <Radio.Group
@@ -54,7 +55,7 @@ export const ParkrunResults = ({
         </Radio.Group>
       </Group>
       <Group mb="xs">
-        <Text size="xs">Base parkrun:</Text>
+        <Text size="xs">As if run at:</Text>
         <Select
           searchable
           data={parkruns}
@@ -67,7 +68,12 @@ export const ParkrunResults = ({
         />
       </Group>
       {chartData.length ? (
-        <LineChart data={chartData} />
+        <>
+          <Title order={2} size="sm" mt="md" mb="sm">
+            How your parkrun times compare if all were run at {targetParkrun}
+          </Title>
+          <LineChart data={chartData} />
+        </>
       ) : (
         <Text ta="center" fw={600} mt="xl">
           No data to display
@@ -80,6 +86,6 @@ export const ParkrunResults = ({
           timesOutsideRange={timesOutsideRange}
         />
       )}
-    </Container>
+    </Box>
   );
 };

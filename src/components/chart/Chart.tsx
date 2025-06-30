@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   Container,
+  Flex,
   Group,
   LoadingOverlay,
   Text,
@@ -67,16 +68,18 @@ export const Chart = () => {
   };
 
   return (
-    <Container size="xs" m="auto" px="lg">
+    <Container size={620} m="auto" px="lg">
       <Group justify="center" gap="xs">
         <Title>Chart</Title>
         <IconChartLine size={36} />
       </Group>
       <Text c="dimmed" mt="lg" mb="sm">
-        View all your parkrun times adjusted for course difficulty.
+        Some parkruns are hillier, muddier, or faster than others. Compare all
+        your results adjusted for course difficulty, as if you ran them all at
+        the same parkrun.
       </Text>
       <form onSubmit={form.onSubmit(handleSubmit)}>
-        <div style={{ display: "flex", gap: "1rem" }}>
+        <Flex gap="md">
           <TextInput
             label="Parkrun ID"
             leftSection="A"
@@ -89,9 +92,9 @@ export const Chart = () => {
           <Button mt="25" type="submit">
             View Results
           </Button>
-        </div>
+        </Flex>
       </form>
-      <Box h="400px" pos="relative">
+      <Box pos="relative">
         <LoadingOverlay
           visible={loading}
           overlayProps={{ blur: 2, backgroundOpacity: 0 }}

@@ -18,15 +18,19 @@ export const LineChart = ({ data }: { data: AdjustedParkrunResult[] }) => {
   const getCSSVariable = (name: string) =>
     getComputedStyle(document.documentElement).getPropertyValue(name).trim();
   const contrastColor = getCSSVariable("--mantine-color-default-color");
-  const indigo = getCSSVariable("--mantine-primary-color-filled");
+  const mutedColor = getCSSVariable("--mantine-color-body");
+  const primaryColor = getCSSVariable("--mantine-primary-color-filled");
+  const textColor = getCSSVariable("--mantine-color-dimmed");
 
   const chartData = {
     labels: data.map((d) => d.date.toLocaleString()),
     datasets: [
       {
         data: data.map((d) => d.time),
-        borderColor: indigo,
-        backgroundColor: contrastColor,
+        borderColor: primaryColor,
+        backgroundColor: data.map((d) =>
+          d.originalTime ? contrastColor : mutedColor,
+        ),
       },
     ],
   };
@@ -34,9 +38,6 @@ export const LineChart = ({ data }: { data: AdjustedParkrunResult[] }) => {
   const options = {
     responsive: true,
     plugins: {
-      legend: {
-        display: false,
-      },
       tooltip: {
         displayColors: false,
         callbacks: {
@@ -57,7 +58,7 @@ export const LineChart = ({ data }: { data: AdjustedParkrunResult[] }) => {
     scales: {
       y: {
         ticks: {
-          color: contrastColor,
+          color: textColor,
           callback: (value: string | number) =>
             formatParkrunTime(value as number),
         },
@@ -68,7 +69,7 @@ export const LineChart = ({ data }: { data: AdjustedParkrunResult[] }) => {
           tooltipFormat: "DD",
         },
         ticks: {
-          color: contrastColor,
+          color: textColor,
         },
       },
     },
@@ -77,8 +78,11 @@ export const LineChart = ({ data }: { data: AdjustedParkrunResult[] }) => {
         radius: 4,
         hoverRadius: 8,
       },
+      line: {
+        borderJoinStyle: "round" as const,
+      },
     },
   };
 
-  return <Line data={chartData} options={options} />;
+  return <Line data={chartData} options={options} height={180} />;
 };
