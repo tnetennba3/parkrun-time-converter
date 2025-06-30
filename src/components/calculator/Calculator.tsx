@@ -1,4 +1,5 @@
 import {
+  Alert,
   Button,
   Container,
   Group,
@@ -8,7 +9,7 @@ import {
   Title,
 } from "@mantine/core";
 import { isInRange, useForm } from "@mantine/form";
-import { IconCalculator } from "@tabler/icons-react";
+import { IconAlertTriangle, IconCalculator } from "@tabler/icons-react";
 import { useState } from "react";
 
 import { EstimatedTime } from "./EstimatedTime";
@@ -18,9 +19,9 @@ import { adjustTimeBySSS } from "@/lib/adjustTimeBySSS";
 import type { Parkrun } from "@/types";
 
 export const Calculator = () => {
-  const [estimatedTime, setEstimatedTime] = useState<number | undefined>(
-    undefined,
-  );
+  const [estimatedTime, setEstimatedTime] = useState<
+    number | undefined | Error
+  >(undefined);
 
   const form = useForm({
     mode: "uncontrolled",
@@ -51,7 +52,12 @@ export const Calculator = () => {
       values.currentParkrun,
       values.targetParkrun,
     );
-    setEstimatedTime(_adjustedTime);
+
+    if (_adjustedTime === undefined) {
+      setEstimatedTime(new Error("Time outside supported range"));
+    } else {
+      setEstimatedTime(_adjustedTime);
+    }
   };
 
   return (
@@ -110,11 +116,24 @@ export const Calculator = () => {
           Estimate Time
         </Button>
 
-        {estimatedTime && (
+        {typeof estimatedTime === "number" && (
           <EstimatedTime
             targetParkrun={form.getValues().targetParkrun}
             estimatedTime={estimatedTime}
           />
+        )}
+
+        {estimatedTime instanceof Error && (
+          <Alert
+            mt="lg"
+            variant="outline"
+            color="var(--mantine-color-error)"
+            title="Estimated time outside supported range"
+            icon={<IconAlertTriangle />}
+          >
+            Only estimated times between 13:00 and 60:00 are supported. Try
+            entering a different time.
+          </Alert>
         )}
       </form>
     </Container>
