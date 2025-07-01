@@ -2,14 +2,18 @@ import { Anchor, List } from "@mantine/core";
 
 import { ExpandableContent } from "../common/ExpandableContent";
 
+import type { Parkrun } from "@/types";
+
 export const ExcludedResults = ({
   total,
   unrecognisedParkruns,
   timesOutsideRange,
+  targetParkrun,
 }: {
   total: number;
   unrecognisedParkruns: number;
   timesOutsideRange: number;
+  targetParkrun: Parkrun;
 }) => (
   <ExpandableContent
     buttonText={`${total} result${total > 1 ? "s" : ""} not shown (why?)`}
@@ -31,8 +35,9 @@ export const ExcludedResults = ({
       {timesOutsideRange > 0 && (
         <List.Item>
           {timesOutsideRange}
-          {timesOutsideRange === 1 ? " result was" : " results were"} outside
-          the supported time range of 13:00 to 59:59.
+          {timesOutsideRange === 1 ? " result was" : " results were"} were
+          outside the supported time range of 13:00 to 59:59 when adjusted for
+          the course difficulty of {targetParkrun}.
         </List.Item>
       )}
     </List>

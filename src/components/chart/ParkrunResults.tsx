@@ -84,6 +84,7 @@ export const ParkrunResults = ({
           total={excludedResults}
           unrecognisedParkruns={unrecognisedParkruns}
           timesOutsideRange={timesOutsideRange}
+          targetParkrun={targetParkrun}
         />
       )}
     </Box>

@@ -46,16 +46,21 @@ export const Calculator = () => {
     },
   });
 
-  const handleSubmit = (values: typeof form.values) => {
-    const time = Number(values.minutes) * 60 + Number(values.seconds);
-    const _adjustedTime = adjustTimeBySSS(
-      time,
-      values.currentParkrun,
-      values.targetParkrun,
-    );
+  const handleSubmit = ({
+    minutes,
+    seconds,
+    currentParkrun,
+    targetParkrun,
+  }: typeof form.values) => {
+    const time = Number(minutes) * 60 + Number(seconds);
+    const _adjustedTime = adjustTimeBySSS(time, currentParkrun, targetParkrun);
 
     if (_adjustedTime === undefined) {
-      setEstimatedTime(new Error("Time outside supported range"));
+      const errorMessage =
+        time < 13 * 60 || time > 60 * 60
+          ? "Only estimated times between 13:00 and 60:00 are supported. Try entering a different time."
+          : `We can only estimate times between 13:00 and 60:00. Your original time is within that range, but adjusting for the difference in difficulty between ${currentParkrun} and ${targetParkrun} would push it outside the range.`;
+      setEstimatedTime(new Error(errorMessage));
     } else {
       setEstimatedTime(_adjustedTime);
     }
@@ -135,8 +140,7 @@ export const Calculator = () => {
             title="Estimated time outside supported range"
             icon={<IconAlertTriangle />}
           >
-            Only estimated times between 13:00 and 60:00 are supported. Try
-            entering a different time.
+            {estimatedTime.message}
           </Alert>
         )}
       </form>
