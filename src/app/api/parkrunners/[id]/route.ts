@@ -54,6 +54,8 @@ export async function GET(
 
     return Response.json(results);
   } catch (error) {
+    console.error(error);
+
     if (axios.isAxiosError(error)) {
       return Response.json(
         {
