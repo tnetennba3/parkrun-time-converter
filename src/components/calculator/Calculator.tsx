@@ -18,10 +18,14 @@ import { parkruns } from "@/data/uk_parkrun_sss";
 import { adjustTimeBySSS } from "@/lib/adjustTimeBySSS";
 import type { Parkrun } from "@/types";
 
+type Result = {
+  targetParkrun: Parkrun;
+  estimatedTime?: number;
+  error?: Error;
+};
+
 export const Calculator = () => {
-  const [estimatedTime, setEstimatedTime] = useState<
-    number | undefined | Error
-  >(undefined);
+  const [result, setResult] = useState<Result | undefined>(undefined);
   const [animationKey, setAnimationKey] = useState(0);
 
   const form = useForm({
@@ -53,18 +57,20 @@ export const Calculator = () => {
     targetParkrun,
   }: typeof form.values) => {
     const time = Number(minutes) * 60 + Number(seconds);
-    const _adjustedTime = adjustTimeBySSS(time, currentParkrun, targetParkrun);
+    const result: Result = {
+      targetParkrun,
+      estimatedTime: adjustTimeBySSS(time, currentParkrun, targetParkrun),
+    };
 
-    if (_adjustedTime === undefined) {
+    if (result.estimatedTime === undefined) {
       const errorMessage =
         time < 13 * 60 || time > 60 * 60
           ? "Only estimated times between 13:00 and 60:00 are supported. Try entering a different time."
           : `We can only estimate times between 13:00 and 60:00. Your original time is within that range, but adjusting for the difference in difficulty between ${currentParkrun} and ${targetParkrun} would push it outside the range.`;
-      setEstimatedTime(new Error(errorMessage));
-    } else {
-      setEstimatedTime(_adjustedTime);
+      result.error = new Error(errorMessage);
     }
 
+    setResult(result);
     setAnimationKey((prev) => prev + 1); // Force re-animation
   };
 
@@ -124,15 +130,15 @@ export const Calculator = () => {
           Estimate Time
         </Button>
 
-        {typeof estimatedTime === "number" && (
+        {result?.estimatedTime && (
           <EstimatedTime
-            targetParkrun={form.getValues().targetParkrun}
-            estimatedTime={estimatedTime}
+            targetParkrun={result.targetParkrun}
+            estimatedTime={result.estimatedTime}
             animationKey={animationKey}
           />
         )}
 
-        {estimatedTime instanceof Error && (
+        {result?.error && (
           <Alert
             mt="lg"
             variant="outline"
@@ -140,7 +146,7 @@ export const Calculator = () => {
             title="Estimated time outside supported range"
             icon={<IconAlertTriangle />}
           >
-            {estimatedTime.message}
+            {result.error.message}
           </Alert>
         )}
       </form>
