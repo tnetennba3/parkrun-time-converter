@@ -1,21 +1,22 @@
 import axios from "axios";
 import * as cheerio from "cheerio";
+import { HttpsProxyAgent } from "https-proxy-agent";
 import { NextRequest } from "next/server";
 
 import { formatParkrunDate } from "@/lib/formatParkrunDate";
 import { parseParkrunTime } from "@/lib/parseParkrunTime";
 import type { Parkrun, ParkrunResult } from "@/types";
 
-const PARKRUN_URL = "https://www.parkrun.org.uk/";
+const PARKRUN_URL = "https://www.parkrun.org.uk";
 
-// To mimic a real browser
 const headers = {
   "User-Agent":
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36",
   "Accept-Language": "en-US,en;q=0.9",
-  "Accept":
-    "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+  "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
 };
+
+const httpsAgent = new HttpsProxyAgent(process.env.PROXY!);
 
 export async function GET(
   request: NextRequest,
@@ -35,7 +36,7 @@ export async function GET(
     }
 
     const url = `${PARKRUN_URL}/parkrunner/${parkrunId}/all/`;
-    const response = await axios.get(url, { headers });
+    const response = await axios.get(url, { headers, httpsAgent });
 
     const $ = cheerio.load(response.data);
     const table = $('table:has(caption:contains("Results"))');
@@ -54,22 +55,25 @@ export async function GET(
 
     return Response.json(results);
   } catch (error) {
-    console.error(error);
-
     if (axios.isAxiosError(error)) {
+      console.error("Axios error:", error);
+
       return Response.json(
         {
           error: error.response?.statusText,
           details: error instanceof Error ? error.message : error,
+          data: error.response?.data,
         },
-        { status: error.status },
+        { status: error.status || 500 },
       );
     }
+
+    console.error("Unexpected error:", error);
 
     return Response.json(
       {
         error: "Internal server error",
-        details: error instanceof Error ? error.message : error,
+        details: error instanceof Error ? error.message : String(error),
       },
       { status: 500 },
     );
