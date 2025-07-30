@@ -33,7 +33,7 @@ export const Calculator = () => {
     validateInputOnBlur: true,
     initialValues: {
       minutes: "",
-      seconds: "",
+      seconds: 0,
       currentParkrun: "Bushy Park" as Parkrun,
       targetParkrun: "Highbury Fields" as Parkrun,
     },
