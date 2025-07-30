@@ -6,8 +6,6 @@ body {
 :root {
   --button-fz: var(--mantine-font-size-md);
   --input-error-size: var(--mantine-font-size-sm);
-
-  background-color: var(--primary-bg-color);
 }
 
 :root[data-mantine-color-scheme="light"] body {
@@ -17,6 +15,8 @@ body {
   --secondary-shade: var(--mantine-color-indigo-1);
   --primary-bg-color: var(--mantine-color-white);
   --secondary-bg-color: var(--mantine-color-gray-1);
+
+  background-color: var(--primary-bg-color);
 }
 
 :root[data-mantine-color-scheme="dark"] body {
@@ -27,4 +27,6 @@ body {
   --secondary-shade: var(--mantine-color-indigo-2);
   --primary-bg-color: var(--mantine-color-dark-8);
   --secondary-bg-color: var(--mantine-color-dark-9);
+
+  background-color: var(--primary-bg-color);
 }
