@@ -73,34 +73,38 @@ export const Chart = () => {
         <Title>Chart</Title>
         <IconChartLine size={36} />
       </Group>
+
       <Text c="dimmed" mt="lg" mb="sm">
         Some parkruns are hillier, muddier, or faster than others. Compare all
         your results adjusted for course difficulty, as if you ran them all at
         the same parkrun.
       </Text>
-      <form onSubmit={form.onSubmit(handleSubmit)}>
-        <Flex gap="md">
-          <TextInput
-            label="Parkrun ID"
-            leftSection="A"
-            style={{
-              flex: 1,
-            }}
-            key={form.key("parkrunId")}
-            {...form.getInputProps("parkrunId")}
-          />
-          <Button mt="25" type="submit">
-            View Results
-          </Button>
-        </Flex>
-      </form>
-      <Box pos="relative">
+
+      <Box pos="relative" mih="200">
         <LoadingOverlay
           visible={loading}
-          overlayProps={{ blur: 2, backgroundOpacity: 0 }}
+          overlayProps={{ blur: 2, color: "var(--primary-bg-color)" }}
           loaderProps={{ type: "dots" }}
           transitionProps={{ transition: "fade", duration: 1000 }}
         />
+
+        <form onSubmit={form.onSubmit(handleSubmit)}>
+          <Flex gap="md">
+            <TextInput
+              label="Parkrun ID"
+              leftSection="A"
+              style={{
+                flex: 1,
+              }}
+              key={form.key("parkrunId")}
+              {...form.getInputProps("parkrunId")}
+            />
+            <Button mt="25" type="submit">
+              View Results
+            </Button>
+          </Flex>
+        </form>
+
         {parkrunResults && (
           <ParkrunResults
             data={parkrunResults}

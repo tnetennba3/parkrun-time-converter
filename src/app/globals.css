@@ -6,6 +6,8 @@ body {
 :root {
   --button-fz: var(--mantine-font-size-md);
   --input-error-size: var(--mantine-font-size-sm);
+
+  background-color: var(--primary-bg-color);
 }
 
 :root[data-mantine-color-scheme="light"] body {
@@ -13,8 +15,8 @@ body {
   --mantine-color-dimmed: var(--mantine-color-gray-7);
   --mantine-color-anchor: var(--mantine-color-indigo-9);
   --secondary-shade: var(--mantine-color-indigo-1);
+  --primary-bg-color: var(--mantine-color-white);
   --secondary-bg-color: var(--mantine-color-gray-1);
-  background-color: var(--mantine-color-white);
 }
 
 :root[data-mantine-color-scheme="dark"] body {
@@ -23,6 +25,6 @@ body {
   --mantine-color-dimmed: var(--mantine-color-gray-4);
   --mantine-color-anchor: var(--mantine-color-indigo-3);
   --secondary-shade: var(--mantine-color-indigo-2);
+  --primary-bg-color: var(--mantine-color-dark-8);
   --secondary-bg-color: var(--mantine-color-dark-9);
-  background-color: var(--mantine-color-dark-8);
 }
