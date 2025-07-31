@@ -1,6 +1,8 @@
 import type { Config } from "jest";
 import nextJest from "next/jest.js";
 
+process.env.TZ = "Europe/London";
+
 const createJestConfig = nextJest({
   dir: "./",
 });

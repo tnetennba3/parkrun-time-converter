@@ -1,11 +1,16 @@
+import { Redis } from "@upstash/redis";
 import axios from "axios";
 import * as cheerio from "cheerio";
 import { HttpsProxyAgent } from "https-proxy-agent";
 import { NextRequest } from "next/server";
 
+import { calculateCacheExpiryDate } from "@/lib/calculateCacheExpiryDate";
 import { formatParkrunDate } from "@/lib/formatParkrunDate";
 import { parseParkrunTime } from "@/lib/parseParkrunTime";
+import { shouldCacheResults } from "@/lib/shouldCacheResults";
 import type { Parkrun, ParkrunResult } from "@/types";
+
+const redis = Redis.fromEnv();
 
 const PARKRUN_URL = "https://www.parkrun.org.uk";
 
@@ -35,6 +40,13 @@ export async function GET(
       );
     }
 
+    const cacheKey = `${process.env.NODE_ENV}:v1:parkrunner:${parkrunId}`;
+    const cachedResults = await redis.get<ParkrunResult[]>(cacheKey);
+
+    if (cachedResults) {
+      return Response.json(cachedResults);
+    }
+
     const url = `${PARKRUN_URL}/parkrunner/${parkrunId}/all/`;
     const response = await axios.get(url, { headers, httpsAgent });
 
@@ -52,6 +64,12 @@ export async function GET(
         results.push({ date, parkrun, time });
       }
     });
+
+    if (shouldCacheResults(results)) {
+      await redis.set(cacheKey, results, {
+        ex: Math.floor(calculateCacheExpiryDate().diffNow().as("seconds")),
+      });
+    }
 
     return Response.json(results);
   } catch (error) {
