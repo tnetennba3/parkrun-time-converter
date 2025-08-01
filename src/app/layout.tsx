@@ -9,6 +9,8 @@ import {
 } from "@mantine/core";
 import type { Metadata } from "next";
 
+import { Header } from "@/components/Header";
+
 export const metadata: Metadata = {
   title: "Parkrun Calculator",
   description: "Calculate your parkrun time for different courses!",
@@ -39,6 +41,7 @@ export default function RootLayout({
       </head>
       <body className="antialiased">
         <MantineProvider theme={theme} defaultColorScheme="auto">
+          <Header />
           {children}
         </MantineProvider>
       </body>
