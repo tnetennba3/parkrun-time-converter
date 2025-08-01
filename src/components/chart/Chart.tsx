@@ -12,7 +12,7 @@ import {
 import { useForm } from "@mantine/form";
 import { IconChartLine } from "@tabler/icons-react";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { ParkrunResults } from "./ParkrunResults";
 
@@ -34,6 +34,13 @@ export const Chart = () => {
     },
   });
 
+  useEffect(() => {
+    const parkrunId = localStorage.getItem("5krun.parkrunId");
+    if (parkrunId) {
+      form.setFieldValue("parkrunId", parkrunId);
+    }
+  }, [form]);
+
   const [loading, setLoading] = useState(false);
   const [targetParkrun, setTargetParkrun] = useState<Parkrun | undefined>(
     undefined,
@@ -45,6 +52,8 @@ export const Chart = () => {
   const handleSubmit = async ({ parkrunId }: typeof form.values) => {
     try {
       setLoading(true);
+
+      localStorage.setItem("5krun.parkrunId", parkrunId);
 
       const { data } = await axios.get<ParkrunResult[]>(
         `/api/parkrunners/${parkrunId}`,
