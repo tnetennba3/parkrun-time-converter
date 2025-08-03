@@ -3,11 +3,14 @@ import "./globals.css";
 
 import {
   ColorSchemeScript,
+  Container,
   createTheme,
   mantineHtmlProps,
   MantineProvider,
 } from "@mantine/core";
 import type { Metadata } from "next";
+
+import { Header } from "@/components/header/Header";
 
 export const metadata: Metadata = {
   title: "Parkrun Calculator",
@@ -39,7 +42,10 @@ export default function RootLayout({
       </head>
       <body className="antialiased">
         <MantineProvider theme={theme} defaultColorScheme="auto">
-          {children}
+          <Container size="md">
+            <Header />
+            {children}
+          </Container>
         </MantineProvider>
       </body>
     </html>

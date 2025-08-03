@@ -14,7 +14,7 @@ export const Header = () => {
   }, []);
 
   return (
-    <Group mt="xs" justify="space-between">
+    <Group pt="xs" justify="space-between">
       <Logo />
       {mounted && <Navigation />}
     </Group>

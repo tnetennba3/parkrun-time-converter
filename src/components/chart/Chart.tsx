@@ -77,19 +77,8 @@ export const Chart = () => {
   };
 
   return (
-    <Container size={620} m="auto" px="lg">
-      <Group justify="center" gap="xs">
-        <Title>Chart</Title>
-        <IconChartLine size={36} />
-      </Group>
-
-      <Text c="dimmed" mt="lg" mb="sm">
-        Some parkruns are hillier, muddier, or faster than others. Compare all
-        your results adjusted for course difficulty, as if you ran them all at
-        the same parkrun.
-      </Text>
-
-      <Box pos="relative" mih="200">
+    <Container size={620} m="auto">
+      <Box pos="relative">
         <LoadingOverlay
           visible={loading}
           overlayProps={{ blur: 2, color: "var(--primary-bg-color)" }}
